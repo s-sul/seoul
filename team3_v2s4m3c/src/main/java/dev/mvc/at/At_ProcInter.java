@@ -14,13 +14,6 @@ public interface At_ProcInter {
     public List<At_Img> at_img_list(HashMap hashmap);
     
     
-    /**
-     * 디폴트 리스트
-     * @param hashmap
-     * @return
-     */
-    public List<At_Img> list_main(HashMap hashmap);
-    
     
     /** 검색 레코드 수
      *   <select id="search_count" resultType="int" parameterType="HashMap">
@@ -47,7 +40,7 @@ public interface At_ProcInter {
     * @param at_name
     * @return
     */
-    public String pagingBox(String listFile, int at_grp_no, int search_count, int nowPage, String at_name);
+    public String pagingBox(String listFile, int at_grp_no, int search_count, int nowPage, String at_name, String dates_date);
 
 
     

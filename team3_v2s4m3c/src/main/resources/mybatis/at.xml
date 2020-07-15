@@ -16,49 +16,45 @@
       <otherwise>
         WHERE at_grp_no=#{at_grp_no} AND (at_name like '%' || #{at_name} || '%'
                           OR at_content like '%' || #{at_name} || '%' 
-                          OR at_detail like '%' || #{at_name} || '%')
+                          OR at_detail like '%' || #{at_name} || '%'
+                          OR at_tag like '%' || #{at_name} || '%')
       </otherwise>
     </choose>
  </select> 
 
 <!--  at + at_img  -->
 <select id="at_img_list" resultType="At_Img" parameterType="HashMap">
+
 SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, r
 FROM (
            SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, rownum as r
            FROM (
-                     SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price
-                     FROM at a, at_img b
-                     <choose>
-                       <when test="at_name == null or at_name == ''"> <!-- 검색하지 않는 경우 -->
-                     WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} and b.at_img_seqno=0
-                       </when>
-                       <otherwise>
-                     WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} 
-                     and b.at_img_seqno=0 
-                     and (at_name like '%' || #{at_name} || '%'
+                    
+<choose>
+<when test="at_name == null or at_name == '' or datets_date == null or datets_date == ''"> <!-- 검색하지 않는 경우 -->
+
+
+                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price
+                  FROM at a, at_img b
+                  WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} and b.at_img_seqno=0
+</when>                                   
+<otherwise>
+                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price, dates_date
+                  FROM at a, at_img b, dates c
+                  WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} 
+                        and b.at_img_seqno=0 
+                        and (at_name like '%' || #{at_name} || '%'
                           OR at_content like '%' || #{at_name} || '%' 
-                          OR at_detail like '%' || #{at_name} || '%'
-                          )
-                          
-                       </otherwise>
-                     </choose>
-                     ORDER BY at_seqno ASC
-                )         
-)
-WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]>
-</select> 
-
-
-<!--  at + at_img  -->
-<select id="list_main" resultType="At_Img" parameterType="HashMap">
-SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, r
-FROM (
-           SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, rownum as r
-           FROM (
-                     SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price
-                     FROM at a, at_img b
-                     WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} and b.at_img_seqno=0
+                          OR at_detail like '%' || #{at_name} || '%')
+                     
+                  UNION
+                     
+                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price, dates_date
+                  FROM at a, at_img b, dates c
+                  WHERE dates_date=#{dates_date} <![CDATA[ AND ROWNUM =1 ]]>
+ 
+</otherwise>
+ </choose>
                      ORDER BY at_seqno ASC
                 )         
 )

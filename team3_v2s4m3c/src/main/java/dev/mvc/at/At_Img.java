@@ -32,15 +32,9 @@ public class At_Img {
   private String at_img_fupname;
   private List<MultipartFile> fnamesMF;
   
-  // dates 검색 위해 추가 
-  private int dates_no;
-  public int getDates_no() {
-    return dates_no;
-  }
-
-  public void setDates_no(int dates_no) {
-    this.dates_no = dates_no;
-  }
+ 
+  //날짜 검색 리스트 위해 추가
+  private String dates_date;
 
   public String getDates_date() {
     return dates_date;
@@ -50,9 +44,7 @@ public class At_Img {
     this.dates_date = dates_date;
   }
 
-  private String dates_date;
-  
-  
+ 
   
 
   public int getAt_no() {
@@ -157,6 +149,15 @@ public class At_Img {
 
   public void setAt_lang(String at_lang) {
     this.at_lang = at_lang;
+  }
+
+
+  public String getAt_tag() {
+    return at_tag;
+  }
+
+  public void setAt_tag(String at_tag) {
+    this.at_tag = at_tag;
   }
 
   public String getAt_map() {

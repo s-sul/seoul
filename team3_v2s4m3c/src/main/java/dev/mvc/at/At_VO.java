@@ -22,11 +22,8 @@ CREATE TABLE AT(
     AT_HIT                            NUMBER(10)     DEFAULT 0     NOT NULL,
     AT_DUR                            NUMBER(10)     NOT NULL,
     AT_LANG                           VARCHAR2(100)    NOT NULL,
-    AT_SNS                            VARCHAR2(1000)     NOT NULL,
+    AT_TAG                            VARCHAR2(1000)     NOT NULL,
     AT_MAP                            VARCHAR2(100)    NOT NULL,
-    AT_IMG                            VARCHAR2(100)    NULL ,
-    AT_THUM                           VARCHAR2(100)    NULL ,
-    AT_IMG_SIZE                       NUMBER(10)     DEFAULT 0     NULL ,
   FOREIGN KEY (AT_GRP_NO) REFERENCES AT_GRP (AT_GRP_NO)
 );
 
@@ -45,7 +42,7 @@ COMMENT ON COLUMN AT.AT_HIT is '상품조회수';
 COMMENT ON COLUMN AT.AT_DUR is '상품소요시간';
 COMMENT ON COLUMN AT.AT_LANG is '상품지원언어';
 COMMENT ON COLUMN AT.AT_SNS is '상품소셜';
-COMMENT ON COLUMN AT.AT_MAP is '상품지도';
+COMMENT ON COLUMN AT.AT_TAG is '상품태그';
 COMMENT ON COLUMN AT.AT_IMG is '상품이미지';
 COMMENT ON COLUMN AT.AT_THUM is '상품썸네일';
 COMMENT ON COLUMN AT.AT_IMG_SIZE is '상품이미지사이즈';
@@ -78,36 +75,7 @@ CREATE SEQUENCE at_seq
   private String at_tag;
   private String at_map;
   
-  private String at_img;
-  private String at_thum;
-  private int at_img_size;
-  private MultipartFile file1MF;
-  
-  
 
-  public String getAt_img() {
-    return at_img;
-  }
-
-  public void setAt_img(String at_img) {
-    this.at_img = at_img;
-  }
-
-  public String getAt_thum() {
-    return at_thum;
-  }
-
-  public void setAt_thum(String at_thum) {
-    this.at_thum = at_thum;
-  }
-
-  public int getAt_img_size() {
-    return at_img_size;
-  }
-
-  public void setAt_img_size(int at_img_size) {
-    this.at_img_size = at_img_size;
-  }
 
   public int getAt_no() {
     return at_no;
@@ -213,7 +181,6 @@ CREATE SEQUENCE at_seq
     this.at_lang = at_lang;
   }
 
-
   public String getAt_tag() {
     return at_tag;
   }
@@ -230,12 +197,5 @@ CREATE SEQUENCE at_seq
     this.at_map = at_map;
   }
 
-  public MultipartFile getFile1MF() {
-    return file1MF;
-  }
-
-  public void setFile1MF(MultipartFile file1mf) {
-    file1MF = file1mf;
-  }
 
 }

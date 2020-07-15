@@ -244,8 +244,7 @@
         <div>
           <h3>Image Gallery</h3>
           <!-- 관리지만 표시 -->
-          <a href="${root }/at_img/modify.do?at_no=${at_VO.at_no }">이미지
-            파일 추가 업로드</a>
+      
           <div class="row gallery-item">
 
             <!--   <button type="button" class="btn" id="btn_img_dlt">이미지 파일 전체 삭제</button></div> -->

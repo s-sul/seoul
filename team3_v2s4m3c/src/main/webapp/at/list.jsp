@@ -74,7 +74,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-4">
-          <div class="form_area" style="padding-bottom:10px;">
+          <div class="form_area" style="padding-bottom: 10px;">
             <h3>어떤 ${at_grp_VO.at_grp_name }을 찾으세요?</h3>
           </div>
         </div>
@@ -87,13 +87,14 @@
               <input type='hidden' name='at_grp_no'
                 value='${at_grp_VO.at_grp_no }'>
 
-              <div class="input_field" style="width:100%;">
+              <div class="input_field" style="width: 100%;">
                 <input type="text" name="at_name" id="at_name"
-                  placeholder="상품통합검색" value="" style="width:70%; padding-right: 10px;">
+                  placeholder="상품통합검색" value=""
+                  style="width: 70%; padding-right: 10px;">
               </div>
-             <!--  <div class="input_field">
+          <!--   <div class="input_field">
                 <input id="dates_date" placeholder="이날 예약을 원해요" value="">
-              </div> -->
+           </div>  -->
 
               <div class="search_btn">
                 <button class="boxed-btn4 " type="submit">Search</button>
@@ -137,11 +138,101 @@
   <!-- 리스트 시작 -->
   <div class="popular_places_area">
     <div class="container">
+      <ul>
+        <li>
+          <div class="allCheck">
+            <input type="checkbox" name="allCheck" id="allCheck" /><label
+              for="allCheck">모두 선택</label>
+          </div> <script>
+                      $("#allCheck").click(function() {
+                        var chk = $("#allCheck").prop("checked");
+                        if (chk) {
+                          $(".chBox").prop("checked", true);
+                        } else {
+                          $(".chBox").prop("checked", false);
+                        }
+                      });
+                    </script>
 
 
+
+
+          <div class="delBtn">
+            <button type="button" class="selectDelete_btn">선택
+              삭제</button>
+          </div> 
+          
+          
+          
+          
+     <script type="text/javascript">
+          $(".selectDelete_btn").click(function() {
+            var confirm_val = confirm("정말 삭제? (복구 안 됨)");
+            if(confirm_val) {
+              var checkArr = new Array();
+              
+              $("input[class='chBox']:checked").each(function(){
+                checkArr.push($(this).attr("data-id"));
+               });
+
+                                  
+               $.ajax({
+                  type : "post",
+                  url : "${root}/at/delete.do",
+                  cache : false,
+                  dataType : "json",
+                  async : false,
+                  data : { chbox : checkArr },
+                  success : function(rdata) {
+
+                        if (rdata.cnt == 1) {
+                          alert("삭제 성공");
+                        } else {
+                          alert("삭제 실패");
+                        }
+                        location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
+                      },
+
+                      error : function(request,
+                          status, error) { // callback 함수, 전형적인 에러함수
+                        var msg = 'ERROR<br><br>';
+                        msg += '<strong>request.status</strong><br>'
+                            + request.status
+                            + '<hr>';
+                        msg += '<strong>error</strong><br>'
+                            + error + '<hr>'; //에러메시지
+                        console.log(msg);
+                      }
+                    });
+                   };
+                  });
+             </script>
+                <!-- 관리자만 노출 -->
+          
+          
+          
+          
+     
+        </li>
+      </ul>
 
       <c:forEach var="at_Img" items="${at_img_list }">
         <div class="col-md-4">
+
+
+
+          <div class="checkBox">
+            <input type="checkbox" name="chBox" class="chBox"
+              data-id="${at_Img.at_no}" />
+          </div>
+          
+               <script>
+                      $(".chBox").click(function() {
+                        $("#allCheck").prop("checked", false);
+                      });
+                    </script>
+          
+          
           <div class="single_place">
             <div class="thumb">
               <!-- 각첨부파일의 첫번째 이미지 노출, 만약 첨부파일 없을시 디폴트 이미지 출력 -->
@@ -187,52 +278,54 @@
                   data-id="${at_Img.at_no}">삭제</button>
 
 
-                <script type="text/javascript">
-                                  $(".delete_${at_Img.at_no }_btn")
-                                      .click(
-                                          function() {
-                                            var params = '';
-                                            $(this).data("id",
-                                                "${at_Img.at_no}");
-                                            var params = $(this).data("id");
-                                            params = 'at_no=' + params;
-                                            alert(params);
+   <script type="text/javascript">
+          $(".delete_${at_Img.at_no }_btn").click(function() {
+            var confirm_val = confirm("정말 삭제? (복구 안 됨)");
+            if(confirm_val) {
+              var checkArr = new Array();
+              
+              $("input[class='chBox']:checked").each(function(){
+                checkArr.push($(this).attr("data-id"));
+               });
 
-                                            if (confirm("삭제하시겠습니까(복구 불가)")) {
-                                              $
-                                                  .ajax({
-                                                    type : "post",
-                                                    url : "${root}/at/delete.do",
-                                                    cache : false,
-                                                    dataType : "json",
-                                                    async : false,
-                                                    data : params,
-                                                    success : function(rdata) {
+                                  
+               $.ajax({
+                  type : "post",
+                  url : "${root}/at/delete.do",
+                  cache : false,
+                  dataType : "json",
+                  async : false,
+                  data : { chbox : checkArr },
+                  success : function(rdata) {
 
-                                                      if (rdata.cnt == 1) {
-                                                        alert("삭제 성공");
-                                                      } else {
-                                                        alert("삭제 실패");
-                                                      }
-                                                      location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
-                                                    },
+                        if (rdata.cnt == 1) {
+                          alert("삭제 성공");
+                        } else {
+                          alert("삭제 실패");
+                        }
+                        location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
+                      },
 
-                                                    error : function(request,
-                                                        status, error) { // callback 함수, 전형적인 에러함수
-                                                      var msg = 'ERROR<br><br>';
-                                                      msg += '<strong>request.status</strong><br>'
-                                                          + request.status
-                                                          + '<hr>';
-                                                      msg += '<strong>error</strong><br>'
-                                                          + error + '<hr>'; //에러메시지
-                                                      console.log(msg);
-                                                    }
-                                                  });
-                                            }
-                                            ;
-                                          });
-                                </script>
+                      error : function(request,
+                          status, error) { // callback 함수, 전형적인 에러함수
+                        var msg = 'ERROR<br><br>';
+                        msg += '<strong>request.status</strong><br>'
+                            + request.status
+                            + '<hr>';
+                        msg += '<strong>error</strong><br>'
+                            + error + '<hr>'; //에러메시지
+                        console.log(msg);
+                      }
+                    });
+                   };
+                  });
+             </script>
                 <!-- 관리자만 노출 -->
+          
+          
+
+
+
 
               </div>
             </div>

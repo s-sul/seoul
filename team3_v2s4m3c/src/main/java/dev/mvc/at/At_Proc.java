@@ -37,32 +37,6 @@ public class At_Proc implements At_ProcInter {
     return list;
   }
   
-  
-  @Override
-  public List<At_Img> list_main(HashMap map) {
-
-    /*
-     * 페이지에서 출력할 시작 레코드 번호 계산 기준값, nowPage는 1부터 시작 1 페이지: nowPage = 1, (1 - 1) * 10
-     * --> 0 2 페이지: nowPage = 2, (2 - 1) * 10 --> 10 3 페이지: nowPage = 3, (3 - 1) *
-     * 10 --> 20
-     */
-    int beginOfPage = ((Integer) map.get("nowPage") - 1) * At_Page.RECORD_PER_PAGE;
-
-    // 시작 rownum, 1 페이지: 1, 2 페이지: 11, 3 페이지: 21
-    int startNum = beginOfPage + 1;
-    // 종료 rownum, 1 페이지: 10, 2 페이지: 20, 3 페이지: 30
-    int endNum = beginOfPage + At_Page.RECORD_PER_PAGE;
-    /*
-     * 1 페이지: WHERE r >= 1 AND r <= 10 2 페이지: WHERE r >= 11 AND r <= 20 3 페이지: WHERE
-     * r >= 21 AND r <= 30
-     */
-    map.put("startNum", startNum);
-    map.put("endNum", endNum);
-
-    List<At_Img> list_main = at_DAO.list_main(map);
-    return list_main;
-  }
-
 
   @Override
   public int search_count(HashMap hashmap) {
@@ -77,7 +51,7 @@ public class At_Proc implements At_ProcInter {
   }
 
   @Override
-  public String pagingBox(String listFile, int at_grp_no, int search_count, int nowPage, String at_name) {
+  public String pagingBox(String listFile, int at_grp_no, int search_count, int nowPage, String at_name, String dates_date) {
     int totalPage = (int) (Math.ceil((double) search_count / At_Page.RECORD_PER_PAGE)); // 전체 페이지
     int totalGrp = (int) (Math.ceil((double) totalPage / At_Page.PAGE_PER_BLOCK));// 전체 그룹
     int nowGrp = (int) (Math.ceil((double) nowPage / At_Page.PAGE_PER_BLOCK)); // 현재 그룹
@@ -124,7 +98,7 @@ public class At_Proc implements At_ProcInter {
     // 현재 15p에서.. 이전10개로 이동 할 경우 -> 10그룹 기준으로 하여 이동
     int _nowPage = (nowGrp - 1) * At_Page.PAGE_PER_BLOCK;
     if (nowGrp >= 2) {
-      str.append("<span class='span_box_1'><A href='" + listFile + "?&at_name=" + at_name + "&nowPage=" + _nowPage
+      str.append("<span class='span_box_1'><A href='" + listFile + "?&at_name=" + at_name + "&nowPage=" + _nowPage + "&dates_date=" + dates_date
           + "&at_grp_no=" + at_grp_no + "'>이전</A></span>");
     }
 
@@ -138,7 +112,7 @@ public class At_Proc implements At_ProcInter {
         str.append("<span class='span_box_2'>" + i + "</span>"); // 현재 페이지, 강조
       } else {
         // 현재 페이지가 아닌 페이지로는 바로 이동 가능하도록 링크를 설정 해 둠
-        str.append("<span class='span_box_1'><A href='" + listFile + "?at_name=" + at_name + "&nowPage=" + i
+        str.append("<span class='span_box_1'><A href='" + listFile + "?at_name=" + at_name + "&nowPage=" + "&dates_date=" + dates_date + i
             + "&at_grp_no=" + at_grp_no + "'>" + i + "</A></span>");
       }
     }
@@ -149,7 +123,7 @@ public class At_Proc implements At_ProcInter {
     // 현재 2그룹일 경우: (2 * 10) + 1 = 3그룹의 시작 페이지 : 21
     _nowPage = (nowGrp * At_Page.PAGE_PER_BLOCK) + 1;
     if (nowGrp < totalGrp) {
-      str.append("<span class='span_box_1'><A href='" + listFile + "?&at_name=" + at_name + "&nowPage=" + _nowPage
+      str.append("<span class='span_box_1'><A href='" + listFile + "?&at_name=" + at_name + "&nowPage=" + _nowPage + "&dates_date=" + dates_date
           + "&at_grp_no=" + at_grp_no + "'>다음</A></span>");
     }
     str.append("</DIV>");

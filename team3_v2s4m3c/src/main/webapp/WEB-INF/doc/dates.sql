@@ -29,8 +29,8 @@ CREATE SEQUENCE dates_seq
   NOCYCLE;                     -- 다시 1부터 생성되는 것을 방지
   
   commit;
-
-select * from user_sequences;
+select * from dates
+select at_no from dates where dates_date='2020-09-05' group by at_no
 ---------------------------------------------------------------
 
 -- 1)Create

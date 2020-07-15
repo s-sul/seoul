@@ -221,7 +221,7 @@
       <label class="control-label col-md-3">TAG</label>
       <div class="col-md-9">
         <input type='text' name='at_tag' id='at_tag'
-          value='${at_VO.at_sns}' required="required"
+          value='${at_VO.at_tag}' required="required"
           autofocus="autofocus" class="form-control" style='width: 50%;'
           required>
       </div>
@@ -237,12 +237,9 @@
       </div>
     </div>
 
-
-  <a href="${root }/at_img/modify.do?at_no=${at_VO.at_no }">이미지 파일 추가 하기</a>
-   
      <div class="form-group">
       <div class="col-md-12">
-        이미지 파일 새로 등록하기<input type='file'
+        이미지 새로 등록하기<input type='file'
           class="form-control" name='fnamesMF' id='fnamesMF' value=''
           placeholder="파일 선택" multiple="multiple" required>
       </div>

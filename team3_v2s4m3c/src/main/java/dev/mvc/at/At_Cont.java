@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,6 +59,7 @@ public class At_Cont {
   @RequestMapping(value = "/at/list.do", method = RequestMethod.GET)
   public ModelAndView at_img_list(@RequestParam(value = "at_grp_no", defaultValue = "1") int at_grp_no,
       @RequestParam(value = "at_name", defaultValue = "") String at_name,
+      @RequestParam(value = "dates_date", defaultValue = "") String dates_date,
       @RequestParam(value = "nowPage", defaultValue = "1") int nowPage) {
 
     ModelAndView mav = new ModelAndView();
@@ -66,6 +69,7 @@ public class At_Cont {
     HashMap<String, Object> map = new HashMap<String, Object>(); // proc에서 만든 map 공유(startnum, endnum+ 여기 3개)
     map.put("at_grp_no", at_grp_no);
     map.put("at_name", at_name);
+    map.put("dates_date", dates_date);
     map.put("nowPage", nowPage);
     // map.put("dates_date", dates_date);
 
@@ -99,7 +103,7 @@ public class At_Cont {
      * @return 페이징 생성 문자열
      */
 
-    String paging = at_Proc.pagingBox("list.do", at_grp_no, search_count, nowPage, at_name);
+    String paging = at_Proc.pagingBox("list.do", at_grp_no, search_count, nowPage, at_name, dates_date);
     mav.addObject("paging", paging);
     mav.addObject("nowPage", nowPage);
 
@@ -268,18 +272,18 @@ public class At_Cont {
     List<MultipartFile> fnamesMF = at_Dates_Img.getFnamesMF(); // 실 파일 개수와 상관없이 <input type="file">의 갯수만큼 잡힘
 
     long count = fnamesMF.stream().filter(t -> t.getSize() > 0).count();
-    System.out.println("파일갯수:" + count);
+    //System.out.println("파일갯수:" + count);
     if (count > 0) {// 전송파일 있는지
       for (MultipartFile multipartFile : fnamesMF) { // 파일 추출
         at_img_size = multipartFile.getSize(); // 파일 크기
         if (at_img_size > 0) { // 파일 크기 체크(정상 파일 확인)
           at_img_fname = multipartFile.getOriginalFilename(); // 원본 파일명
-          System.out.println("원본 파일명: " + at_img_fname);
+          //System.out.println("원본 파일명: " + at_img_fname);
           at_img_fupname = Upload.saveFileSpring(multipartFile, upDir); // 파일 저장 후 업로드 된 파일명 리턴
-          System.out.println("업로드 파일명: " + at_img_fupname);
+          //System.out.println("업로드 파일명: " + at_img_fupname);
           if (Tool.isImage(at_img_fname)) { // 이미지인지 검사
             at_img_thumb = Tool.preview(upDir, at_img_fupname, 120, 80); // thumb 이미지 생성 후 파일명 리턴 됨(width height 순)
-            System.out.println("썸네일 파일명: " + at_img_thumb);
+            //System.out.println("썸네일 파일명: " + at_img_thumb);
           }
 
           at_Dates_Img.setAt_img_fname(at_img_fname);
@@ -307,28 +311,77 @@ public class At_Cont {
    */
   @ResponseBody
   @RequestMapping(value = "/at/delete.do", method = RequestMethod.POST)
-  public String delete(HttpServletRequest request, int at_no) {
+  public String delete(HttpServletRequest request, At_VO at_VO, @RequestParam(value = "chbox[]") List<String> chArr) {
 
-    // 파일 삭제
-    List<At_Dates_Img> list_img = this.at_Img_Proc.read(at_no);
-    if (!list_img.isEmpty()) {
-
-      while (list_img.size() == 0) {
-        At_Dates_Img at_Dates_Img = this.at_Img_Proc.read_row(at_no);
-        String upDir = Tool.getRealPath(request, "/at/storage");
-        Tool.deleteFile(upDir, at_Dates_Img.getAt_img_fupname());
-        Tool.deleteFile(upDir, at_Dates_Img.getAt_img_thumb());
-      }
+    int cnt=0;
+    
+    for(String i : chArr) {   
+      at_VO.setAt_no(Integer.parseInt(i));
+        
+        // 파일 삭제
+        List<At_Dates_Img> list_img = this.at_Img_Proc.read(at_VO.getAt_no());
+        if (!list_img.isEmpty()) {
+    
+          while (list_img.size() == 0) {
+            At_Dates_Img at_Dates_Img = this.at_Img_Proc.read_row(at_VO.getAt_no());
+            String upDir = Tool.getRealPath(request, "/at/storage");
+            Tool.deleteFile(upDir, at_Dates_Img.getAt_img_fupname());
+            Tool.deleteFile(upDir, at_Dates_Img.getAt_img_thumb());
+          }
+        }
+    
+        this.at_Img_Proc.delete(at_VO.getAt_no()); // 파일삭제
+        cnt = this.at_Proc.delete(at_VO.getAt_no()); // 상품삭제
+    
     }
-
-    this.at_Img_Proc.delete(at_no); // 파일삭제
-    int cnt = this.at_Proc.delete(at_no); // 상품삭제
+    
     // System.out.println(cnt);
     JSONObject json = new JSONObject();
     json.put("cnt", cnt);
     return json.toString();
 
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+//  /**
+//   * 삭제처리
+//   * 
+//   * @param
+//   * @return
+//   */
+//  @ResponseBody
+//  @RequestMapping(value = "/at/delete.do", method = RequestMethod.POST)
+//  public String delete(HttpServletRequest request, int at_no) {
+//
+//    // 파일 삭제
+//    List<At_Dates_Img> list_img = this.at_Img_Proc.read(at_no);
+//    if (!list_img.isEmpty()) {
+//
+//      while (list_img.size() == 0) {
+//        At_Dates_Img at_Dates_Img = this.at_Img_Proc.read_row(at_no);
+//        String upDir = Tool.getRealPath(request, "/at/storage");
+//        Tool.deleteFile(upDir, at_Dates_Img.getAt_img_fupname());
+//        Tool.deleteFile(upDir, at_Dates_Img.getAt_img_thumb());
+//      }
+//    }
+//
+//    this.at_Img_Proc.delete(at_no); // 파일삭제
+//    int cnt = this.at_Proc.delete(at_no); // 상품삭제
+//    // System.out.println(cnt);
+//    JSONObject json = new JSONObject();
+//    json.put("cnt", cnt);
+//    return json.toString();
+//
+//  }
 
   /**
    * 수정폼

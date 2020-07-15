@@ -18,7 +18,7 @@ CREATE TABLE AT(
 		AT_HIT                        		NUMBER(10)		 DEFAULT 0		 NOT NULL,
 		AT_DUR                        		NUMBER(10)		 NOT NULL,
 		AT_LANG                       		VARCHAR2(100)		 NOT NULL,
-		AT_SNS                        		VARCHAR2(1000)		 NOT NULL,
+		AT_TAG                        		VARCHAR2(1000)		 NOT NULL,
 		AT_MAP                        		VARCHAR2(100)		 NOT NULL,
   FOREIGN KEY (AT_GRP_NO) REFERENCES AT_GRP (AT_GRP_NO)
 );
@@ -37,7 +37,7 @@ COMMENT ON COLUMN AT.AT_LOWEST is '상품최저가보장여부';
 COMMENT ON COLUMN AT.AT_HIT is '상품조회수';
 COMMENT ON COLUMN AT.AT_DUR is '상품소요시간';
 COMMENT ON COLUMN AT.AT_LANG is '상품지원언어';
-COMMENT ON COLUMN AT.AT_SNS is '상품소셜';
+COMMENT ON COLUMN AT.AT_TAG is '상품태그;
 COMMENT ON COLUMN AT.AT_MAP is '상품지도';
 
 DROP SEQUENCE at_seq;
@@ -152,4 +152,19 @@ FROM    DUAL;
 
 rollback;
 
- 
+
+at_name 조건 만족 리스트  + dates_date 조건 만족 리스트
+
+select a.at_no, a.at_name, b.at_img_fupname
+from at a, at_img b
+where a.at_no = b.at_no and at_img_seqno =0
+
+union
+
+select a.at_no, a.at_name, b.dates_date
+from at a, dates b
+where b.dates_date = '2020-09-05'
+
+
+
+ https://richtiger.tistory.com/entry/UNION-GROUP-BY-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%B0%EA%B2%B0%EA%B8%B0%EB%B2%95%EC%86%8C%EA%B0%9C%EC%9D%91%EC%9A%A9%EC%82%AC%EB%A1%80

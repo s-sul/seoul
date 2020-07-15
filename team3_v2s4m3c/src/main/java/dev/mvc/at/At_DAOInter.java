@@ -12,13 +12,7 @@ public interface At_DAOInter {
  */
   public List<At_Img> at_img_list(HashMap hashmap);
   
-  
-  /**
-   * 디폴트 리스트
-   * @param hashmap
-   * @return
-   */
-  public List<At_Img> list_main(HashMap hashmap);
+ 
   
   
   /** 검색 레코드 수
