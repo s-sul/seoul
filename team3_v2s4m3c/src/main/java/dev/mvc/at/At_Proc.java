@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dev.mvc.at_grp.At_grp_VO;
+
 @Component("dev.mvc.at.At_Proc")
 public class At_Proc implements At_ProcInter {
 
@@ -154,5 +156,28 @@ public class At_Proc implements At_ProcInter {
     int cnt = this.at_DAO.update(at_Dates_Img);
     return cnt;
   }
+
+
+  @Override
+  public List<At_All> at_all() {
+    List<At_All> at_all = this.at_DAO.at_all();
+    return at_all;
+  }
+
+
+  @Override
+  public int update_visible(At_All at_All) {
+
+    if (at_All.getAt_visible().toUpperCase().equals("Y")) {
+      at_All.setAt_visible("N");
+    } else {
+      at_All.setAt_visible("Y");
+    }
+    
+    int cnt = this.at_DAO.update_visible(at_All);
+    return cnt;
+  }
+  
+  
 
 }

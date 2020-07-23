@@ -56,5 +56,11 @@ public class Dates_Proc implements Dates_ProcInter {
     return cnt;
   }
   
+  @Override
+  public int delete_all(int at_no) {
+    int cnt = this.dates_DAO.delete_all(at_no);
+    return cnt;
+  }
+  
   
 }

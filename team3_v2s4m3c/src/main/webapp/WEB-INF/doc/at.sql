@@ -55,37 +55,41 @@ CREATE SEQUENCE at_seq
 -- 1)Create
 
 INSERT INTO at(at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map)
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map)
 VALUES (at_seq.nextval, 1, 1, 'Y', '진진자라', '전메뉴 이용권', 50000, '중국집', 'Y', 'Y', 0, 2, '영어', 'http://www.daum.net', 0);
 
 INSERT INTO at(at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map)
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map)
 VALUES (at_seq.nextval, 1, 1, 'Y', '티볼로24', '3종 세트', 40000, '호텔 운영 뷔페', 'Y', 'Y', 0, 2, '영어', 'http://www.daum.net', 0);
 
 INSERT INTO at(at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map)
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map)
 VALUES (at_seq.nextval, 1, 1, 'Y', '교촌치킨', '반반', 50000, '이민호 광고 치킨집', 'Y', 'Y', 0, 2, '영어', 'http://www.daum.net', 0);
 
 INSERT INTO at(at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map)
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map)
 VALUES (at_seq.nextval, 2, 1, 'Y', '한복체험', '경복궁 한복체험', 50000, '한복 착용시 경복궁 입장 무료!', 'Y', 'Y', 0, 2, '영어', 'http://www.daum.net', 0);
 
 INSERT INTO at(at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map)
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map)
 VALUES (at_seq.nextval, 2, 1, 'Y', '롯데월드타워', '전망대 입장권', 50000, '초고층 전망대에서 야경을!', 'Y', 'Y', 0, 2, '영어', 'http://www.daum.net', 0);
 
 COMMIT;
 
+
+select *
+from at
+
 -- 2)List
 
 SELECT at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map
 FROM at
 ORDER BY at_no ASC; 
 
 -- 3)Read
 SELECT at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, 
-at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map
+at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map
 FROM at
 WHERE at_no =1; 
 
@@ -106,7 +110,7 @@ WHERE at_no=1
 
  
 -- 출력 순서에따른 전체 목록
-SELECT at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_sns, at_map
+SELECT at_no, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, at_content, at_cancle, at_lowest, at_hit, at_dur, at_lang, at_tag, at_map
 FROM at
 ORDER BY at_seqno ASC;
 
@@ -124,6 +128,17 @@ WHERE at_no=1;
 SELECT COUNT(*) as cnt
 FROM at
 
+
+select *
+from at
+
+
+no 1 맛집  cnt
+no 2 체험 cnt
+
+
+-- 리스트 페이지에서의 레코드 개수
+select at_grp_no, at_grp_name
 
 -- at+ list + 페이징 +검색
 select *
@@ -165,6 +180,3 @@ select a.at_no, a.at_name, b.dates_date
 from at a, dates b
 where b.dates_date = '2020-09-05'
 
-
-
- https://richtiger.tistory.com/entry/UNION-GROUP-BY-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%B0%EA%B2%B0%EA%B8%B0%EB%B2%95%EC%86%8C%EA%B0%9C%EC%9D%91%EC%9A%A9%EC%82%AC%EB%A1%80

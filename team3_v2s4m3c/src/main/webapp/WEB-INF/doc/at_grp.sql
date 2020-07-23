@@ -88,3 +88,22 @@ WHERE r >= 1 AND r <= 10;
  -- 전체 레코드 갯수
 SELECT COUNT(*) as cnt
 FROM at_grp
+
+--해당 카테고리 그룹에 대한 상품의 개수
+
+no 1 인기맛집
+
+select a.at_grp_no, a.at_grp_name, b.cnt
+from at_grp a, (
+                select at_grp_no, count(*) as cnt
+                from at
+                group by at_grp_no
+                ) b
+where a.at_grp_no=b.at_grp_no(+)
+order by a.at_grp_seqno asc;
+
+
+
+    
+select *
+from at_grp

@@ -66,9 +66,6 @@
   </div>
   <!--/ bradcam_area  -->
 
-
-
-
   <!--검색  -->
   <div class="where_togo_area">
     <div class="container">
@@ -92,7 +89,7 @@
                   placeholder="상품통합검색" value=""
                   style="width: 70%; padding-right: 10px;">
               </div>
-          <!--   <div class="input_field">
+              <!--   <div class="input_field">
                 <input id="dates_date" placeholder="이날 예약을 원해요" value="">
            </div>  -->
 
@@ -102,8 +99,6 @@
             </form>
             <!--  검색 입력 폼 끝 -->
 
-
-
           </div>
         </div>
       </div>
@@ -111,13 +106,16 @@
   </div>
   <!--검색  -->
 
+<%--   <c:choose>
+    <c:when test="${sessionScope.admin_id != null}"> --%>
+      <ASIDE style='float: right;'>
+        <a
+          href="${root }/at/create.do?at_grp_no=${at_grp_VO.at_grp_no }">${at_grp_VO.at_grp_name }
+          상품 등록</a>
+      </ASIDE>
+<%--     </c:when>
+  </c:choose> --%>
 
-  <!-- 관리자만  노출 -->
-  <ASIDE style='float: right;'>
-    <a href="${root }/at/create.do?at_grp_no=${at_grp_VO.at_grp_no }">${at_grp_VO.at_grp_name }
-      상품 등록</a>
-  </ASIDE>
-  <!-- 관리자만  노출 -->
 
   <!--  검색 시 출력 -->
   <ASIDE style='float: left;'>
@@ -139,11 +137,15 @@
   <div class="popular_places_area">
     <div class="container">
       <ul>
-        <li>
-          <div class="allCheck">
-            <input type="checkbox" name="allCheck" id="allCheck" /><label
-              for="allCheck">모두 선택</label>
-          </div> <script>
+        <li><c:choose>
+            <c:when test="${sessionScope.admin_id != null}">
+              <!-- 관리자 로그인 -->
+              <div class="allCheck">
+                <input type="checkbox" name="allCheck" id="allCheck" /><label
+                  for="allCheck">모두 선택</label>
+              </div>
+            </c:when>
+          </c:choose> <script>
                       $("#allCheck").click(function() {
                         var chk = $("#allCheck").prop("checked");
                         if (chk) {
@@ -152,87 +154,92 @@
                           $(".chBox").prop("checked", false);
                         }
                       });
-                    </script>
+                    </script> <c:choose>
+            <c:when test="${sessionScope.admin_id != null}">
+              <!-- 관리자 로그인 -->
+              <div class="delBtn">
+                <button type="button" class="selectDelete_btn">
+                  선택 삭제</button>
+              </div>
+            </c:when>
+          </c:choose> <script type="text/javascript">
+                      $(".selectDelete_btn")
+                          .click(
+                              function() {
+                                var confirm_val = confirm("정말 삭제? (복구 안 됨)");
+                                if (confirm_val) {
+                                  var checkArr = new Array();
 
+                                  $("input[class='chBox']:checked").each(
+                                      function() {
+                                        checkArr.push($(this).attr("data-id"));
+                                      });
 
+                                  $
+                                      .ajax({
+                                        type : "post",
+                                        url : "${root}/at/delete.do",
+                                        cache : false,
+                                        dataType : "json",
+                                        async : false,
+                                        data : {
+                                          chbox : checkArr
+                                        },
+                                        success : function(rdata) {
 
+                                          if (rdata.cnt == 1) {
+                                            alert("삭제 성공");
+                                          } else {
+                                            alert("삭제 실패");
+                                          }
+                                          location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
+                                        },
 
-          <div class="delBtn">
-            <button type="button" class="selectDelete_btn">선택
-              삭제</button>
-          </div> 
-          
-          
-          
-          
-     <script type="text/javascript">
-          $(".selectDelete_btn").click(function() {
-            var confirm_val = confirm("정말 삭제? (복구 안 됨)");
-            if(confirm_val) {
-              var checkArr = new Array();
-              
-              $("input[class='chBox']:checked").each(function(){
-                checkArr.push($(this).attr("data-id"));
-               });
-
-                                  
-               $.ajax({
-                  type : "post",
-                  url : "${root}/at/delete.do",
-                  cache : false,
-                  dataType : "json",
-                  async : false,
-                  data : { chbox : checkArr },
-                  success : function(rdata) {
-
-                        if (rdata.cnt == 1) {
-                          alert("삭제 성공");
-                        } else {
-                          alert("삭제 실패");
-                        }
-                        location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
-                      },
-
-                      error : function(request,
-                          status, error) { // callback 함수, 전형적인 에러함수
-                        var msg = 'ERROR<br><br>';
-                        msg += '<strong>request.status</strong><br>'
-                            + request.status
-                            + '<hr>';
-                        msg += '<strong>error</strong><br>'
-                            + error + '<hr>'; //에러메시지
-                        console.log(msg);
-                      }
-                    });
-                   };
-                  });
-             </script>
-                <!-- 관리자만 노출 -->
-          
-          
-          
-          
-     
-        </li>
+                                        error : function(request, status, error) { // callback 함수, 전형적인 에러함수
+                                          var msg = 'ERROR<br><br>';
+                                          msg += '<strong>request.status</strong><br>'
+                                              + request.status + '<hr>';
+                                          msg += '<strong>error</strong><br>'
+                                              + error + '<hr>'; //에러메시지
+                                          console.log(msg);
+                                        }
+                                      });
+                                }
+                                ;
+                              });
+    </script> <!-- 관리자만 노출 --></li>
       </ul>
 
-      <c:forEach var="at_Img" items="${at_img_list }">
+
+   <c:forEach var="at_Img" items="${at_img_list }">
+
+    <c:choose>
+      <c:when test="${at_Img.at_visible =='Y' }"> 
+
+      
+        
         <div class="col-md-4">
 
 
+          <c:choose>
+            <c:when test="${sessionScope.admin_id != null}">
+              <!-- 관리자 로그인 -->
 
-          <div class="checkBox">
-            <input type="checkbox" name="chBox" class="chBox"
-              data-id="${at_Img.at_no}" />
-          </div>
-          
-               <script>
-                      $(".chBox").click(function() {
-                        $("#allCheck").prop("checked", false);
-                      });
-                    </script>
-          
-          
+              <div class="checkBox">
+                <input type="checkbox" name="chBox" class="chBox"
+                  data-id="${at_Img.at_no}" />
+              </div>
+
+              <script>
+                              $(".chBox").click(function() {
+                                $("#allCheck").prop("checked", false);
+                              });
+                            </script>
+
+            </c:when>
+          </c:choose>
+
+
           <div class="single_place">
             <div class="thumb">
               <!-- 각첨부파일의 첫번째 이미지 노출, 만약 첨부파일 없을시 디폴트 이미지 출력 -->
@@ -247,7 +254,6 @@
               </c:choose>
 
               <!-- 각첨부파일의 첫번째 이미지 노출, 만약 첨부파일 없을시 디폴트 이미지 출력 -->
-
               <a
                 href="${root }/at/read.do?at_grp_no=${at_Img.at_grp_no }&at_no=${at_Img.at_no }"
                 class="prise"> <fmt:formatNumber
@@ -263,83 +269,91 @@
                   class="d-flex justify-content-center align-items-center">
                   <i class="fa fa-star"></i> <i class="fa fa-star"></i>
                   <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i> <a href="#">(20 Review)</a>
+                  <i class="fa fa-star"></i> <a href="#">(20 Review)</a> <!--  리뷰 갯수 수정 예정 -->
                 </span>
                 <div class="days">
-                  <i class="fa fa-clock-o"></i> ${at_Img.at_dur }시간
+                  <i class="fa fa-clock-o"></i>${at_Img.at_dur }시간
                 </div>
 
                 <!-- 관리자만 노출 -->
+                <c:choose>
+                  <c:when test="${sessionScope.admin_id != null}">
+                    <!-- 관리자 로그인 -->
+                    <button type="button"
+                      onclick="location.href='${root }/at/update.do?at_no=${at_Img.at_no }'">수정</button>
+                    <button type="button"
+                      class="delete_${at_Img.at_no }_btn"
+                      data-id="${at_Img.at_no}">삭제</button>
+                  </c:when>
+                </c:choose>
 
-                <button type="button"
-                  onclick="location.href='${root }/at/update.do?at_no=${at_Img.at_no }'">수정</button>
-                <button type="button"
-                  class="delete_${at_Img.at_no }_btn"
-                  data-id="${at_Img.at_no}">삭제</button>
+                <script type="text/javascript">
+                                  $(".delete_${at_Img.at_no }_btn")
+                                      .click(
+                                          function() {
+                                            var confirm_val = confirm("정말 삭제? (복구 안 됨)");
+                                            if (confirm_val) {
+                                              var checkArr = new Array();
 
+                                              $("input[class='chBox']:checked")
+                                                  .each(
+                                                      function() {
+                                                        checkArr.push($(this)
+                                                            .attr("data-id"));
+                                                      });
 
-   <script type="text/javascript">
-          $(".delete_${at_Img.at_no }_btn").click(function() {
-            var confirm_val = confirm("정말 삭제? (복구 안 됨)");
-            if(confirm_val) {
-              var checkArr = new Array();
-              
-              $("input[class='chBox']:checked").each(function(){
-                checkArr.push($(this).attr("data-id"));
-               });
+                                              $
+                                                  .ajax({
+                                                    type : "post",
+                                                    url : "${root}/at/delete.do",
+                                                    cache : false,
+                                                    dataType : "json",
+                                                    async : false,
+                                                    data : {
+                                                      chbox : checkArr
+                                                    },
+                                                    success : function(rdata) {
 
-                                  
-               $.ajax({
-                  type : "post",
-                  url : "${root}/at/delete.do",
-                  cache : false,
-                  dataType : "json",
-                  async : false,
-                  data : { chbox : checkArr },
-                  success : function(rdata) {
+                                                      if (rdata.cnt == 1) {
+                                                        alert("삭제 성공");
+                                                      } else {
+                                                        alert("삭제 실패");
+                                                      }
+                                                      location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
+                                                    },
 
-                        if (rdata.cnt == 1) {
-                          alert("삭제 성공");
-                        } else {
-                          alert("삭제 실패");
-                        }
-                        location.href = "${root}/at/list.do?at_name=${at_name}&nowPage=${now_Page}&at_grp_no=${at_grp_no}";
-                      },
-
-                      error : function(request,
-                          status, error) { // callback 함수, 전형적인 에러함수
-                        var msg = 'ERROR<br><br>';
-                        msg += '<strong>request.status</strong><br>'
-                            + request.status
-                            + '<hr>';
-                        msg += '<strong>error</strong><br>'
-                            + error + '<hr>'; //에러메시지
-                        console.log(msg);
-                      }
-                    });
-                   };
-                  });
-             </script>
-                <!-- 관리자만 노출 -->
-          
-          
-
-
-
-
+                                                    error : function(request,
+                                                        status, error) { // callback 함수, 전형적인 에러함수
+                                                      var msg = 'ERROR<br><br>';
+                                                      msg += '<strong>request.status</strong><br>'
+                                                          + request.status
+                                                          + '<hr>';
+                                                      msg += '<strong>error</strong><br>'
+                                                          + error + '<hr>'; //에러메시지
+                                                      console.log(msg);
+                                                    }
+                                                  });
+                                            }
+                                            ;
+                                          });
+                                </script>
               </div>
             </div>
           </div>
           <!-- single_place -->
         </div>
+    </c:when>
+        </c:choose> 
+      
         <!-- col-md-3 -->
       </c:forEach>
-
-
     </div>
   </div>
 
 
+
+
+       
   <!-- Modal -->
   <div class="modal fade custom_search_pop" id="exampleModalCenter"
     tabindex="-1" role="dialog"
@@ -354,7 +368,6 @@
     </div>
   </div>
   <!-- link that opens popup -->
-
 
   <!-- JS here -->
   <script src="${root }/js/vendor/modernizr-3.5.0.min.js"></script>

@@ -6,6 +6,22 @@
 <mapper namespace="dev.mvc.at.At_DAOInter">
 
 
+<!-- 전체 상품 -->
+<select id="at_all" resultType="At_All" parameterType="HashMap">
+select a.at_grp_name, b.*
+from at_grp a, at b
+where a.at_grp_no=b.at_grp_no
+order by a.at_grp_no
+</select>
+
+<!-- 출력 모드 변경 (Y or N) -->
+<update id="update_visible" parameterType="At_All" >
+UPDATE at
+SET at_visible =#{at_visible}
+WHERE at_no =#{at_no}
+</update>
+
+
  <select id="search_count" resultType="int" parameterType="HashMap">
     SELECT COUNT(*) as cnt
     FROM at
@@ -25,21 +41,21 @@
 <!--  at + at_img  -->
 <select id="at_img_list" resultType="At_Img" parameterType="HashMap">
 
-SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, r
+SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, at_dur, r
 FROM (
-           SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, rownum as r
+           SELECT at_no, at_img_fupname, at_grp_no, at_seqno, at_visible, at_name, at_detail, at_price, at_dur, rownum as r
            FROM (
                     
 <choose>
 <when test="at_name == null or at_name == '' or datets_date == null or datets_date == ''"> <!-- 검색하지 않는 경우 -->
 
 
-                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price
+                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price , at_dur
                   FROM at a, at_img b
                   WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} and b.at_img_seqno=0
 </when>                                   
 <otherwise>
-                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price, dates_date
+                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price, at_dur, dates_date
                   FROM at a, at_img b, dates c
                   WHERE a.at_no = b.at_no and at_grp_no=#{at_grp_no} 
                         and b.at_img_seqno=0 
@@ -49,7 +65,7 @@ FROM (
                      
                   UNION
                      
-                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price, dates_date
+                  SELECT a.at_no, b.at_img_fupname, a.at_grp_no, a.at_seqno, a.at_visible, a.at_name, a.at_detail, a.at_price,  at_dur, dates_date
                   FROM at a, at_img b, dates c
                   WHERE dates_date=#{dates_date} <![CDATA[ AND ROWNUM =1 ]]>
  
@@ -63,12 +79,13 @@ WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]>
 
 
 
-  <!-- 전체글수(전체레코드수)/ 파라미터 없음 -->
+<!-- 전체글수(전체레코드수)/ 파라미터 없음 -->
   <select id="total_count" resultType="int">
     SELECT COUNT(*) as cnt
     FROM
     at
   </select>
+  
 
   <!-- 조회 -->
   <select id="read" resultType="At_VO" parameterType="int">

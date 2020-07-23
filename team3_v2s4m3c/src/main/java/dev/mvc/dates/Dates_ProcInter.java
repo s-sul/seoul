@@ -50,5 +50,8 @@ public interface Dates_ProcInter {
    */
   public int delete(HashMap hasmap);
   
+  
+  public int delete_all(int at_no);
+  
 
 }

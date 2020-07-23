@@ -3,7 +3,23 @@ package dev.mvc.at;
 import java.util.HashMap;
 import java.util.List;
 
+import dev.mvc.at_grp.At_grp_VO;
+
 public interface At_DAOInter {
+  
+  
+  /**
+   * 전체 상품
+   */
+  
+  public List<At_All> at_all();
+  
+  /** 
+   * 출력 모드 변경
+   */
+  
+  public int update_visible(At_All at_All);
+  
   
  /** 페이징+검색 리스트
  * 
@@ -59,5 +75,9 @@ public interface At_DAOInter {
    * @return
    */
   public int update(At_Dates_Img at_Dates_Img);
+  
+
+  
+ 
 
 }

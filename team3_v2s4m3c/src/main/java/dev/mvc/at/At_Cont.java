@@ -107,6 +107,7 @@ public class At_Cont {
     mav.addObject("paging", paging);
     mav.addObject("nowPage", nowPage);
 
+
     mav.setViewName("/at/list");
     return mav;
   }
@@ -269,6 +270,7 @@ public class At_Cont {
     String at_img_thumb = "";
     long at_img_size = 0;
     String upDir = Tool.getRealPath(request, "/at/storage");// 절대 경로
+    
     List<MultipartFile> fnamesMF = at_Dates_Img.getFnamesMF(); // 실 파일 개수와 상관없이 <input type="file">의 갯수만큼 잡힘
 
     long count = fnamesMF.stream().filter(t -> t.getSize() > 0).count();
@@ -344,7 +346,26 @@ public class At_Cont {
   
   
   
-  
+  /**
+   * 삭제처리
+   * 
+   * @param
+   * @return
+   */
+  @ResponseBody
+  @RequestMapping(value = "/at/delete.do", method = RequestMethod.GET)
+  public ModelAndView delete(int at_no) {
+    
+    ModelAndView mav = new ModelAndView();
+    this.at_Img_Proc.delete(at_no); // 파일삭제
+    this.dates_Proc.delete_all(at_no); //재고 삭제
+    this.at_Proc.delete(at_no);
+    mav.setViewName("redirect:/at/list_all.do"); // 새로운 list 출력
+
+    return mav;
+    
+    
+  }
   
   
   
@@ -496,5 +517,40 @@ public class At_Cont {
     json.put("cnt", cnt);
     return json.toString();
   }
+  
+  
+  /**
+      전체 목록
+   */
+  
+  
+  @RequestMapping(value="/at/list_all.do", method=RequestMethod.GET)
+  public ModelAndView at_all() {
+    ModelAndView mav = new ModelAndView();
 
+      List<At_All> at_all = this.at_Proc.at_all();
+      mav.addObject("at_all", at_all); 
+      mav.setViewName("/at/list_all");
+ 
+    return mav;
+  }
+  
+
+  /**
+   * 출력모드 변경
+   * 
+   * @param
+   * @return
+   */
+  @RequestMapping(value = "/at/update_visible.do", method = RequestMethod.GET)
+  public ModelAndView update_visible(At_All at_All) {
+    ModelAndView mav = new ModelAndView();
+    this.at_Proc.update_visible(at_All);
+
+    mav.setViewName("redirect:/at/list_all.do"); // 새로운 list 출력
+
+    return mav;
+  }
+
+ 
 }

@@ -87,5 +87,11 @@ public interface At_grp_DAOInter {
   public int delete(int at_grp_no);
   
   
+  /**
+   * ¿Œµ¶Ω∫ 
+   */
+  
+  public List<At_grp_Cnt> at_grp_index();
+  
 
 }

@@ -5,13 +5,24 @@ import java.util.List;
 
 public interface At_ProcInter {
   
+  /**
+   * 전체 상품
+   */
+  
+  public List<At_All> at_all();
+  
+  /** 
+   * 출력 모드 변경
+   */
+  
+  public int update_visible(At_All at_All);
   
   /** 페이징+검색 리스트
    * 
    * @param hashmap
    * @return
    */
-    public List<At_Img> at_img_list(HashMap hashmap);
+   public List<At_Img> at_img_list(HashMap hashmap);
     
     
     
@@ -20,7 +31,7 @@ public interface At_ProcInter {
      * @param hashmap
      * @return
      */
-    public int search_count(HashMap hashmap);
+   public int search_count(HashMap hashmap);
     
     
     /**

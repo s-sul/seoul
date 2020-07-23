@@ -202,8 +202,11 @@ public class At_grp_Proc implements At_grp_ProcInter {
   }
 
 
-
-
+  @Override
+  public List<At_grp_Cnt> at_grp_index() {
+   List<At_grp_Cnt> at_grp_index =this.at_grp_DAO.at_grp_index();
+    return at_grp_index;
+  }
 
 
 }

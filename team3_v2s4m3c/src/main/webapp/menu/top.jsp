@@ -60,6 +60,8 @@
                         <li><a href="#">수정</a></li>
                         <li><a href="#">삭제</a></li>
                       </ul></li>
+                      
+<li><a href="${root }/at/list_all.do">전체 상품</a></li>
 
 
                     <li><a href="#">고객센터 <i

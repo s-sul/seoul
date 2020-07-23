@@ -59,4 +59,10 @@ WHERE at_no=#{at_no} and dates_date=#{dates_date} <![CDATA[ AND ROWNUM =1 ]]>
 </delete>
 
 
+<delete id="delete_all" parameterType="int">
+delete from dates
+where at_no=#{at_no}
+</delete>
+
+
 </mapper>

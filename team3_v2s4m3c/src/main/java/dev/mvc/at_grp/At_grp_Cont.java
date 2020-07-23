@@ -1,12 +1,11 @@
 package dev.mvc.at_grp;
 
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import dev.mvc.at.At_ProcInter;
+
 @Controller
 public class At_grp_Cont {
 
   @Autowired
   @Qualifier("dev.mvc.at_grp.At_grp_Proc")
   private At_grp_ProcInter at_grp_Proc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.at.At_Proc")
+  private At_ProcInter at_Proc;
+  
+  
 
   /**
    * 메시지
@@ -260,5 +267,25 @@ public class At_grp_Cont {
    
    return mav;
  } 
+
+ 
+ 
+ 
+ /**
+  * 인덱스 카테고리 목록
+  * http://localhost:9090/team3/at_grp/at_grp.do
+  * @param request
+  * @return
+  */
+@RequestMapping(value="/at_grp/at_grp_index.do", method=RequestMethod.GET)
+public ModelAndView at_grp_index(HttpServletRequest request){
+ 
+  ModelAndView mav = new ModelAndView();
+  List<At_grp_Cnt> at_grp_index = at_grp_Proc.at_grp_index(); 
+  mav.addObject("at_grp_index", at_grp_index);
+  mav.setViewName("/at_grp/at_grp_index");
+  
+  return mav;
+} 
 
 }

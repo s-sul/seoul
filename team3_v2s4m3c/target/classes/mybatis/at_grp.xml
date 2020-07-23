@@ -86,5 +86,17 @@ WHERE at_grp_no=#{at_grp_no}
 </delete>
 
 
+<!-- 해당 카테고리 그룹에 대한 상품의 개수 -->
+<select id="at_grp_index" resultType="At_grp_Cnt">
+select a.at_grp_no, a.at_grp_name, b.cnt
+from at_grp a, (
+                select at_grp_no, count(*) as cnt
+                from at
+                group by at_grp_no
+                ) b
+where a.at_grp_no=b.at_grp_no(+)
+order by a.at_grp_seqno asc
+</select>
+
 
 </mapper>
