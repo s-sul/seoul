@@ -7,19 +7,11 @@
   content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, width=device-width" />
 <link href="${root}/css/style.css" rel="Stylesheet" >
 
-<script
-  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
-<script
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
-    
-    
-    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
     <footer class="footer">
         <div class="footer_top">
@@ -71,11 +63,11 @@
                     <div class="col-xl-2 col-md-6 col-lg-2">
                         <div class="footer_widget">
                             <h3 class="footer_title">
-                                Company
+                                Seoulo
                             </h3>
                             <ul class="links">
                                 <li><a href="#">Pricing</a></li>
-                                <li><a href="#">About</a></li>
+                                <li><a href="#">About Us</a></li>
                                 <li><a href="#"> Gallery</a></li>
                                 <li><a href="#"> Contact</a></li>
                             </ul>

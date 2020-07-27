@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    
-    
-
-
-  <!-- Oracle Connection Pool, 안정적인 데이터베이스 연결 지원, MyBATIS 사용 -->
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- Oracle Connection Pool, 안정적인 데이터베이스 연결 지원, MyBATIS 사용 -->
   <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
     <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
     <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE" />
@@ -30,11 +26,33 @@
     <property name="dataSource" ref="dataSource" />
     <!-- 아래부분은 매핑할 xml파일이 있는 패키지경로를 설정한다. -->
     <property name="typeAliasesPackage" 
-                   value="dev.mvc.team3,
-                          dev.mvc.at_grp,
-                          dev.mvc.at,
-                          dev.mvc.dates,
-                          dev.mvc.at_img" />
+                   value="dev.mvc.mem, 
+                              dev.mvc.mem_pic, 
+                              dev.mvc.mem_wish, 
+                              dev.mvc.mem_his, 
+                              dev.mvc.review,
+                   
+                              dev.mvc.at_grp, 
+                              dev.mvc.at, 
+                              dev.mvc.at_img, 
+                              dev.mvc.dates,
+                              
+                              dev.mvc.faq, 
+                              dev.mvc.notice, 
+                              dev.mvc.notice_attachfile, 
+                              dev.mvc.inquire, 
+                              dev.mvc.inquire_reply, 
+                              dev.mvc.inquire_attachfile,
+                              
+                              dev.mvc.cart, 
+                              dev.mvc.payment, 
+                              dev.mvc.payment_details,
+                              
+                              dev.mvc.surv, 
+                              dev.mvc.surv_choice, 
+                              dev.mvc.surv_item " />
+                   
+                   
     <property name="mapperLocations" value="classpath:mybatis/*.xml" />
   </bean>
   
@@ -47,5 +65,8 @@
   <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer">
     <property name="basePackage" value="dev.mvc" />
   </bean>
- 
 </beans>
+
+
+
+

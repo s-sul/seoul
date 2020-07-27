@@ -31,6 +31,11 @@
 
     <link rel="stylesheet" href="css/style.css">
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+    
+    <script type="text/javascript">
+
+
+    </script>
 </head>
 
 <body>
@@ -38,8 +43,29 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
 
-
- <jsp:include page="/menu/top.jsp" />
+  <jsp:include page="/menu/top.jsp" />
+  
+  <!-- Modal 알림창 시작 -->
+  <div class="modal fade" id="modal_panel" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title" id='modal_title'></h4><!-- ▶ 제목 -->
+        </div>
+        <div class="modal-body">
+          <p id='modal_content'></p>  <!-- ▶ 내용 -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="toread" class="btn btn-default" data-dismiss="modal">확인</button>
+          <!-- <button type="button" onclick="" data-dismiss="modal">확인</button> -->
+        </div>
+      </div>
+    </div>
+  </div> 
+<!-- Modal 알림창 종료 --> 
+   
 
     <!-- slider_area_start -->
     <div class="slider_area">
@@ -96,17 +122,78 @@
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="section_title text-center mb_70">
-                        <h3>현재 판매 중인 상품</h3>
+                        <h3>인기 티켓</h3>
                         <p>Suffered alteration in some form, by injected humour or good day randomised booth anim 8-bit hella wolf moon beard words.</p>
                     </div>
                 </div>
             </div>
             <div class="row">
-            
-           <!-- 카테고리 그룹 실행  -->
-             <c:import url="/at_grp/at_grp_index.do" />
-             
-             
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="img/destination/1.png" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">Italy <a href="travel_destination.html">  07 Places</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="img/destination/2.png" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">Brazil <a href="travel_destination.html">  03 Places</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="img/destination/3.png" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">America <a href="travel_destination.html">  10 Places</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="img/destination/4.png" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">Nepal <a href="travel_destination.html">  02 Places</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="img/destination/5.png" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">Maldives <a href="travel_destination.html">  02 Places</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="img/destination/6.png" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">Indonesia <a href="travel_destination.html">  05 Places</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -128,9 +215,9 @@
                                         <div class="author_thumb">
                                             <img src="img/testmonial/author.png" alt="">
                                         </div>
-                                        <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
+                                        <p>"교촌은 진리입니다. 전 레드만 먹어요. 왜냐면 레드가 짱이니까요. 나중에 부부부업으로 교촌 차릴거예요ㅎㅎ >.~</p>
                                         <div class="testmonial_author">
-                                            <h3>- Micky Mouse</h3>
+                                            <h3>- ＊봉님, 교촌 후기</h3>
                                         </div>
                                     </div>
                                 </div>

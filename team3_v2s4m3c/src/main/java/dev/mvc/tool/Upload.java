@@ -374,11 +374,13 @@ public class Upload extends HttpServletRequestWrapper {
  
                 File oldfile = new File(absPath, originalFileName);
             
+                // ▽ 존재하는 파일명과 중복되는지 for문으로 확인 ▽
+                
                 if ( oldfile.exists()){  // 같은 파일명이 존재한다면, 파일명에 일련번호 추가 작업
                     for(int k=0; true; k++){
                         // 파일명 중복을 피하기 위한 일련 번호를 생성하여
                         // 파일명으로 조합
-                        oldfile = new File(absPath, only_filename + "_" + k + ext_filename);
+                        oldfile = new File(absPath, only_filename + "_" + k + ext_filename); 
                         
                         // 조합된 파일명이 존재하지 않는다면, 일련번호가
                         // 붙은 파일명 다시 생성
@@ -396,7 +398,7 @@ public class Upload extends HttpServletRequestWrapper {
                 // System.out.println("업로드 후 fileName: " + fileName);
                 // System.out.println("업로드 후 serverFullPath: " + serverFullPath);
                 
-                outputStream = new FileOutputStream( serverFullPath ); //파일쓰기시작
+                outputStream = new FileOutputStream( serverFullPath );
  
                 // 버퍼를 만든다.
                 int readBytes = 0;
@@ -420,3 +422,4 @@ public class Upload extends HttpServletRequestWrapper {
     }
  
 } 
+ 

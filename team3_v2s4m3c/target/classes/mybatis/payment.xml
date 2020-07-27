@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="dev.mvc.payment.PaymentDAOInter"> 
+
+<!--  등록 --> 
+<insert id="create" parameterType="PaymentVO">
+     INSERT INTO payment(payment_no, mem_no, at_no,cart_no, payment_way, payment_total, payment_date, cart_cnt, at_price,at_name)
+    VALUES(payment_seq.nextval,  #{mem_no}, #{at_no}, #{cart_no}, #{payment_way}, #{payment_total},  sysdate, #{cart_cnt}, #{at_price},#{at_name})       
+</insert> 
+
+
+<!--  조회 -->
+<select id="read" resultType="PaymentVO" parameterType="int">
+    SELECT payment_no, mem_no, at_no, payment_way, payment_total, payment_date, at_price, at_name, cart_cnt
+    FROM payment
+    WHERE payment_no=#{payment_no}
+</select>
+
+
+<!-- 삭제 -->
+<delete id="delete" parameterType="PaymentVO">
+    DELETE FROM payment
+    WHERE payment_no = #{payment_no} AND mem_no=#{mem_no}
+</delete>
+  
+
+<!-- 갯수 -->
+<select id="search_count" resultType="int" >
+   SELECT COUNT(*) as cnt
+   FROM payment
+</select>
+
+
+<!--  리뷰 갯수 (회원별) -->
+<select id="count_by_mem_no"  resultType="int" parameterType="HashMap" >
+  SELECT COUNT(*) as cnt
+  FROM review
+  WHERE mem_no=#{mem_no}
+</select>
+   
+   
+<!-- 회원별 결제 내역 -->
+<select id="list" parameterType="HashMap" resultType="PaymentVO">
+    SELECT payment_no, mem_no, payment_way, payment_total, payment_date, at_name, at_no,  r
+    FROM (
+               SELECT payment_no, mem_no, payment_way, payment_total, payment_date, at_name, at_no, rownum as r
+               FROM (
+                            SELECT payment_no, mem_no, payment_way, payment_total, payment_date, at_name, at_no
+                            FROM payment
+                            WHERE mem_no=#{mem_no}
+                            ORDER BY payment_no ASC
+               )          
+    )
+    WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]>
+</select>
+  
+ 
+</mapper>

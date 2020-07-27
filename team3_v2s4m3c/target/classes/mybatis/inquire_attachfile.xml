@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "dev.mvc.inquire_attachfile.Inquire_attachfileDAOInter">
+  <!-- 1:1문의 첨부파일 등록 -->
+  <insert id="create" parameterType="Inquire_attachfileVO">
+    INSERT INTO inquire_attachfile(inquire_attachfileno, inquireno, inquire_fname, inquire_fupname, inquire_thumb, inquire_fsize, inquire_rdate)
+    VALUES(inquire_attachfile_seq.nextval, #{inquireno}, #{inquire_fname}, #{inquire_fupname}, #{inquire_thumb}, #{inquire_fsize}, sysdate)
+  </insert>
+
+  <!-- 1:1문의 첨부파일 목록 -->
+  <select id="list" resultType="Inquire_attachfileVO">
+    SELECT inquire_attachfileno, inquireno, inquire_fname, inquire_fupname, inquire_thumb, inquire_fsize, inquire_rdate
+    FROM inquire_attachfile
+    ORDER BY inquireno DESC, inquire_attachfileno ASC
+  </select>
+  
+  <!-- 1:1문의 첨부파일 조회 -->
+  <select id="read" resultType="Inquire_attachfileVO" parameterType="int">
+    SELECT inquire_attachfileno, inquireno, inquire_fname, inquire_fupname, inquire_thumb, inquire_fsize, inquire_rdate
+    FROM inquire_attachfile
+    WHERE inquire_attachfileno=#{inquire_attachfileno}
+  </select>
+  
+  <!-- 1:1문의 첨부파일 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM inquire_attachfile
+    WHERE inquire_attachfileno = #{inquire_attachfileno}
+  </delete>
+  
+  <!-- 1:1문의 별 목록 -->
+  <select id="list_by_inquireno" resultType="Inquire_attachfileVO" parameterType="int">
+    SELECT inquire_attachfileno, inquireno, inquire_fname, inquire_fupname, inquire_thumb, inquire_fsize, inquire_rdate
+    FROM inquire_attachfile
+    WHERE inquireno=#{inquireno}
+  </select>
+  
+</mapper> 

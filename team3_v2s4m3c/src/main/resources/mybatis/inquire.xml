@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace = "dev.mvc.inquire.InquireDAOInter">
+  <!-- 1:1문의 등록 -->
+  <insert id="create" parameterType="InquireVO">
+    INSERT INTO inquire(inquireno, mem_no, inquire_title, inquire_content, inquire_rname, inquire_passwd, inquire_rdate)
+    VALUES(inquire_seq.nextval, #{mem_no}, #{inquire_title}, #{inquire_content}, #{inquire_rname}, #{inquire_passwd}, sysdate)
+  </insert>
+  
+  <!-- 전체 목록 -->
+  <select id="list" resultType="InquireVO">
+    SELECT inquireno, mem_no, inquire_title, inquire_content, inquire_rname, inquire_passwd, inquire_rdate
+    FROM inquire 
+    ORDER BY inquireno DESC
+  </select>
+  
+  <!-- 1:1문의 페이징 + 메인 이미지 -->
+  <select id="list_by_search_paging" resultType="InquireVO" parameterType="HashMap">
+    SELECT inquireno, inquire_title, inquire_content, inquire_rname, inquire_rdate, r
+    FROM (
+               SELECT inquireno, inquire_title, inquire_content, inquire_rname, inquire_rdate, rownum as r
+               FROM (
+                         SELECT inquireno, inquire_title, inquire_content, inquire_rname, inquire_rdate
+                         FROM inquire
+                         ORDER BY inquireno DESC
+               )          
+    )
+    WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]>
+    <!-- 
+    1 page: WHERE r >= 1 AND r <= 10; 
+    2 page: WHERE r >= 11 AND r <= 20;
+    3 page: WHERE r >= 21 AND r <= 30;
+    -->                          
+  </select>   
+   
+  <!-- 1:1문의 조회 -->
+  <select id="read" resultType="InquireVO" parameterType="int">
+    SELECT inquireno, mem_no, inquire_title, inquire_content, inquire_rname, inquire_passwd, inquire_rdate
+    FROM inquire 
+    WHERE inquireno = #{inquireno}
+  </select>
+  
+  <!-- 1:1문의 수정 -->
+  <update id="update" parameterType="InquireVO">
+    UPDATE inquire 
+    SET inquire_title=#{inquire_title}, inquire_content=#{inquire_content}
+    WHERE inquireno = #{inquireno}
+  </update>
+  
+  <!-- 패스워드 검사 -->
+  <select id="passwd_check" parameterType="HashMap" resultType="int">
+    SELECT COUNT(*) as inquire_passwd_cnt
+    FROM inquire
+    WHERE inquireno=#{inquireno} AND inquire_passwd=#{inquire_passwd}
+  </select>  
+  
+  <!-- 1:1문의 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM inquire
+    WHERE inquireno=#{inquireno}
+  </delete> 
+  
+  <!-- 1:1문의 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM inquire
+    WHERE  (inquire_title LIKE '%' || #{word} || '%'
+                  OR inquire_content LIKE '%' || #{word} || '%')
+  </select>                  
+  
+  <!-- 회원별 문의 목록 -->
+  <select id="list_by_mem_no" resultType="InquireVO" parameterType="int">
+    SELECT inquireno, mem_no, inquire_title, inquire_content, inquire_rname, inquire_passwd, inquire_rdate
+    FROM inquire 
+    WHERE mem_no = #{mem_no}
+    ORDER BY inquireno DESC
+  </select>
+  
+  
+</mapper>
